@@ -1,0 +1,73 @@
+﻿<Window x:Class="CyberCompanion.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cyber Companion - Your Security Chatbot" Height="600" Width="900"
+        Background="#F0F2F5">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Side Panel: ASCII Art, Voice Greeting, and Memory Display -->
+        <Border Grid.Column="0" Background="#2C3E50" CornerRadius="8" Margin="0,0,10,0">
+            <StackPanel Margin="10">
+                <TextBlock Text="🛡️ ASCII ART" FontWeight="Bold" Foreground="White" FontSize="16" Margin="0,0,0,10"/>
+                <Border Background="#1A252F" CornerRadius="6" Padding="5">
+                    <!-- Fixed ASCII art displayed in monospace font -->
+                    <TextBlock x:Name="AsciiArtBlock" FontFamily="Consolas" FontSize="10" Foreground="#AED6F1"
+                               Text="   .-&quot;'&quot;-.
+ .'       '.
+/   O   O   \
+:           :
+|    ( )    |
+:  .-----'  :
+ '.       .'
+   '-...-'" 
+                               TextWrapping="Wrap"/>
+                </Border>
+                <Button x:Name="PlayGreetingButton" Content="🎤 Play Voice Greeting" Margin="0,15,0,10"
+                        Background="#E67E22" Foreground="White" FontWeight="Bold" Click="PlayGreetingButton_Click"/>
+                <Border Background="#1A252F" CornerRadius="6" Padding="8" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="📝 Memory" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock x:Name="MemoryDisplay" Foreground="#BDC3C7" TextWrapping="Wrap" FontSize="12"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!-- Chat Area -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- ListBox for chat messages with custom templates for user/bot bubbles -->
+            <ListBox x:Name="ChatListBox" Background="White" BorderBrush="#D5D8DC" Margin="0,0,0,10"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="8" Margin="5" Padding="8" Background="{Binding Background}"
+                                HorizontalAlignment="{Binding Alignment}">
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Foreground="#2C3E50"/>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- Input area: text box + send button -->
+            <Grid Grid.Row="1" Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="InputTextBox" Grid.Column="0" Padding="8" FontSize="14"
+                         KeyDown="InputTextBox_KeyDown" Margin="0,0,10,0"/>
+                <Button x:Name="SendButton" Grid.Column="1" Content="Send" Width="70" Height="35"
+                        Background="#3498DB" Foreground="White" FontWeight="Bold" Click="SendButton_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
