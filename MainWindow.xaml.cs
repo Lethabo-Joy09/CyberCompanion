@@ -1,6 +1,5 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Media;
 using System.Speech.Synthesis;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,12 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace CyberCompanion
+namespace cyberCompanion   // Change if your namespace is different
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml.
-    /// Handles GUI events, voice greeting, chat message display, and memory UI update.
-    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly ChatbotEngine _chatbot;
@@ -26,28 +21,19 @@ namespace CyberCompanion
         {
             InitializeComponent();
 
-            // Set path for the voice greeting WAV file (saved in output directory)
             _greetingWavPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "greeting.wav");
 
-            // Initialise memory and chatbot engine
             _memory = new MemoryStore();
             _chatbot = new ChatbotEngine(_memory);
 
-            // Collection for chat messages (supports dynamic UI updates)
             _messages = new ObservableCollection<ChatMessage>();
             ChatListBox.ItemsSource = _messages;
 
-            // Generate the WAV file if it doesn't exist (first run)
             EnsureGreetingWav();
-
-            // Welcome message from the bot
             AddBotMessage("Hello! I'm your cybersecurity assistant. Ask me about passwords, scams, or privacy.");
-
-            // Update the side panel to show current memory contents
             UpdateMemoryDisplay();
         }
 
-        /// <summary>Generate greeting.wav using System.Speech if not already present.</summary>
         private void EnsureGreetingWav()
         {
             if (!System.IO.File.Exists(_greetingWavPath))
@@ -60,7 +46,6 @@ namespace CyberCompanion
             }
         }
 
-        /// <summary>Play the voice greeting using MediaPlayer (supports WAV).</summary>
         private void PlayGreeting()
         {
             if (System.IO.File.Exists(_greetingWavPath))
@@ -72,62 +57,72 @@ namespace CyberCompanion
             }
         }
 
-        // Event handler for the Play Greeting button
         private void PlayGreetingButton_Click(object sender, RoutedEventArgs e) => PlayGreeting();
 
-        // Send button click event
         private void SendButton_Click(object sender, RoutedEventArgs e) => ProcessUserInput();
 
-        // Allow pressing Enter key to send message
         private void InputTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
                 ProcessUserInput();
         }
 
-        /// <summary>Read user input, get chatbot response, update UI.</summary>
         private void ProcessUserInput()
         {
             string input = InputTextBox.Text.Trim();
-            if (string.IsNullOrEmpty(input)) return;
+            if (string.IsNullOrEmpty(input))
+            {
+                AddBotMessage("Please type a message. I can help with passwords, scams, privacy, or phishing.");
+                return;
+            }
 
-            // Show user's message in chat
             AddUserMessage(input);
             InputTextBox.Clear();
 
-            // Get response from chatbot engine (sentiment is used internally)
+            // Check for exit/quit/bye commands
+            string lowerInput = input.ToLower();
+            if (lowerInput == "exit" || lowerInput == "quit" || lowerInput == "bye")
+            {
+                AddBotMessage("Thank you for using Cyber Companion. Goodbye! 👋");
+                // Wait 1.5 seconds so user sees the goodbye message, then close
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.5) };
+                timer.Tick += (s, e) =>
+                {
+                    timer.Stop();
+                    Application.Current.Shutdown();
+                };
+                timer.Start();
+                return;
+            }
+
             string response = _chatbot.ProcessInput(input, out _);
             AddBotMessage(response);
 
-            // Refresh memory display in side panel (name, favourite topic)
             UpdateMemoryDisplay();
         }
 
-        /// <summary>Add a user message to the chat list (right-aligned, blue bubble).</summary>
         private void AddUserMessage(string text)
         {
             _messages.Add(new ChatMessage
             {
                 Text = text,
                 Alignment = HorizontalAlignment.Right,
-                Background = new SolidColorBrush(Color.FromRgb(52, 152, 219)) // #3498DB
+                Background = new SolidColorBrush(Color.FromRgb(52, 152, 219))
             });
             ScrollToBottom();
         }
 
-        /// <summary>Add a bot message (left-aligned, light grey bubble).</summary>
         private void AddBotMessage(string text)
         {
             _messages.Add(new ChatMessage
             {
                 Text = text,
                 Alignment = HorizontalAlignment.Left,
-                Background = new SolidColorBrush(Color.FromRgb(236, 240, 241)) // #ECF0F1
+                Background = new SolidColorBrush(Color.FromRgb(236, 240, 241))
             });
             ScrollToBottom();
         }
 
-        /// <summary>Auto-scroll to the most recent message.</summary>
         private void ScrollToBottom()
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
@@ -137,18 +132,24 @@ namespace CyberCompanion
             }));
         }
 
-        /// <summary>Update the side panel with currently stored name and favourite topic.</summary>
         private void UpdateMemoryDisplay()
         {
             string name = _memory.Get("name") ?? "Not set";
             string favTopic = _memory.Get("favouriteTopic") ?? "None";
             MemoryDisplay.Text = $"Name: {name}\nFavourite topic: {favTopic}";
         }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 
-    /// <summary>
-    /// Model for a single chat message. Implements INotifyPropertyChanged to update UI when properties change.
-    /// </summary>
     public class ChatMessage : INotifyPropertyChanged
     {
         private string _text = "";
