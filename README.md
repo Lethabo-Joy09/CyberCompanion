@@ -31,12 +31,12 @@ A friendly WPF chatbot that teaches cybersecurity topics like passwords, scams, 
 
 | You type | Bot response |
 |----------|---------------|
-| `my name is Alex` | "Nice to meet you, Alex! I'm your cybersecurity assistant. 🔐 Use a strong password..." |
-| `I like privacy` | "Got it! I'll remember that you like privacy. 👤 Limit what you share on social media..." |
+| `my name is Alex` | "Nice to meet you, Alex! I'm your cybersecurity assistant. Use a strong password..." |
+| `I like privacy` | "Got it! I'll remember that you like privacy.  Limit what you share on social media..." |
 | `tell me about scams` | Random scam tip |
 | `tell me more` | Another random scam tip (same topic) |
-| `I'm worried about phishing` | "I understand you're worried. 🎣 Phishing emails often create urgency..." |
-| `exit` | "Thank you for using Cyber Companion. Goodbye! 👋" (app closes) |
+| `I'm worried about phishing` | "I understand you're worried.  Phishing emails often create urgency..." |
+| `exit` | "Thank you for using Cyber Companion. Goodbye! " (app closes) |
 | (empty input) | "Please type a message. I can help with passwords, scams, privacy, or phishing." |
 
 ## GitHub Requirements Met
