@@ -48,7 +48,7 @@ A friendly WPF chatbot that teaches cybersecurity topics like passwords, scams, 
 
 ## Video Explanation
 
-[Insert your YouTube unlisted video link here]
+https://youtu.be/QYv1cY377Uk?si=Z65uxAYDyAPK7zdp
 
 The video demonstrates:
 - Project structure and code organisation
