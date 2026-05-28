@@ -41,10 +41,10 @@ A friendly WPF chatbot that teaches cybersecurity topics like passwords, scams, 
 
 ## GitHub Requirements Met
 
-- ✅ Minimum **6 commits** with meaningful messages.
-- ✅ At least **2 releases/tags** (e.g., `v1.0`, `v1.1`).
-- ✅ Complete source code, README, and auto‑generated `greeting.wav` included.
-- ✅ Video presentation (unlisted YouTube) linked below.
+-  Minimum **6 commits** with meaningful messages.
+-  At least **2 releases/tags** (e.g., `v1.0`, `v1.1`).
+-  Complete source code, README, and auto‑generated `greeting.wav` included.
+-  Video presentation (unlisted YouTube) linked below.
 
 ## Video Explanation
 
